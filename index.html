@@ -10,12 +10,12 @@
     <div class="box">
       <form id="loginForm" autocomplete="off">
         <div class="title">
-          <h1>Login</h1>
+          <h1>🙋‍♂️Login</h1> 
         </div>
 
         <div class="input-box">
-          <label for="gmail" class="label-color">Gmail</label>
-          <input id="gmail" name="gmail" type="email" placeholder="Enter Gmail" required/>
+          <label for="username" class="label-color">User Name</label>
+          <input id="username" name="username" type="text" placeholder="Enter Username" required/>
           <br/>
 
           <label for="password" class="label-color">Password</label>
@@ -43,11 +43,11 @@
 
       // Demo users (front-end only; not secure for production)
       const validUsers = [
-        { gmail: "naresh@gmail.com", password: "12345678" },
-        { gmail: "sanjai@gmail.com", password: "12345678" },
-        { gmail: "mouli@gmail.com", password: "12345678" },
-        { gmail: "nivas@gmail.com", password: "12345678" },
-        { gmail: "shathi@gmail.com", password: "12345678" },
+        { username: "naresh", password: "12345678" },
+        { username: "sanjai", password: "12345678" },
+        { username: "parthiban", password: "12345678" },
+        { username: "mani", password: "12345678" },
+        { username: "ram", password: "12345678" },
       ];
 
       // Form submit
@@ -56,16 +56,16 @@
 
       loginForm.addEventListener("submit", function (e) {
         e.preventDefault();
-        const email = document.getElementById("gmail").value.trim().toLowerCase();
+        const username = document.getElementById("username").value.trim().toLowerCase();
         const password = document.getElementById("password").value.trim();
-        const userFound = validUsers.find(u => u.gmail === email && u.password === password);
+        const userFound = validUsers.find(u => u.username === username && u.password === password);
 
         if (userFound) {
           errorMsg.textContent = "";
-          sessionStorage.setItem("userEmail", email);
+          sessionStorage.setItem("username", username);
           window.location.href = "data.html";
         } else {
-          errorMsg.textContent = "❌ Invalid Gmail or Password";
+          errorMsg.textContent = "❌ Invalid Username or Password";
         }
       });
     </script>
