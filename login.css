@@ -1,0 +1,143 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(-45deg, #ff00cc, #3333ff, #00ffcc, #ff6600);
+  background-size: 400% 400%;
+  animation: neonBackground 12s ease infinite;
+}
+
+@keyframes neonBackground {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.box {
+  position: relative;
+  width: 370px;
+  background: #1c1c1c;
+  border-radius: 50px 5px;
+  overflow: hidden;
+  box-shadow: 0 0 20px #45f3ff, 0 0 40px #ff00cc, 0 0 60px #00ffcc;
+}
+
+.box::before,
+.box::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 370px;
+  height: 470px;
+  background: linear-gradient(60deg, transparent, #45f3ff, #45f3ff);
+  transform-origin: bottom right;
+  animation: animate 6s linear infinite;
+}
+
+.box::after {
+  background: linear-gradient(60deg, transparent, #d9138a, #d9138a);
+  animation-delay: -3s;
+}
+
+@keyframes animate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+form {
+  position: relative;
+  background: #28292d;
+  border-radius: 50px 5px;
+  padding: 30px 40px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title h1 {
+  text-align: center;
+  font-size: 28px;
+  color: #45f3ff;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.label-color {
+  color: #ccc;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 10px;
+  background: #1e1e1e;
+  border: 2px solid #333;
+  border-radius: 8px;
+  color: white;
+  transition: 0.3s;
+}
+
+.input-box input:focus {
+  border-color: #45f3ff;
+  box-shadow: 0 0 6px #45f3ff;
+  outline: none;
+}
+
+.password-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.password-container button {
+  padding: 10px;
+  border: none;
+  background: #333;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.password-container button:hover {
+  background: #45f3ff;
+  color: black;
+}
+
+.Login {
+  background: #45f3ff;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  color: black;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.Login:hover {
+  background: #00ffcc;
+  box-shadow: 0 0 10px #00ffcc;
+}
+
+.error-message {
+  color: #ff6b6b;
+  font-size: 14px;
+  text-align: center;
+}
+
+@media (max-width: 430px) {
+  .box { width: 90%; }
+}

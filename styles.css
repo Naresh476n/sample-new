@@ -1,0 +1,332 @@
+ /* ------------------------------------------------------------------ 
+  ESP32 Power Tracker — Editable CSS with Hover Effects
+   ------------------------------------------------------------------ */
+
+/* =========================
+   Theme & layout variables
+   ========================= */
+:root{
+  /* Colors */
+  --bg: #0f172a;               /* page background */
+  --card: #111827;             /* card background */
+  --panel: #0b1220;            /* inner panels / tiles */
+  --border: #1f2937;           /* card borders */
+  --muted: #e2e8f0;            /* primary text color */
+  --muted-2: #94a3b8;          /* secondary text / subtle */
+  --accent: #0590ff;           /* primary accent / buttons */
+  --accent-2: #22c55e;         /* success / toggled state */
+  --danger: #ef4444;           /* warnings / errors */
+
+  /* Spacing / sizing */
+  --container-max: 1100px;
+  --gutter: 16px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+
+  /* Typography */
+  --font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --base-size: 14px;
+  --heading-size: 20px;
+
+  /* Switch sizes */
+  --switch-width: 58px;
+  --switch-height: 32px;
+  --switch-thumb: 24px;
+
+  /* Breakpoints */
+  --bp-sm: 720px;
+}
+
+/* =========================
+   Global reset / base
+   ========================= */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:var(--font-family);
+  font-size:var(--base-size);
+  background:var(--bg);
+  color:var(--muted);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.35;
+}
+
+/* focus */
+:focus{outline:3px solid rgba(5,144,255,0.12);outline-offset:2px}
+
+/* =========================
+   Page header
+   ========================= */
+header{
+  padding:calc(var(--gutter) * 1) calc(var(--gutter) * 1.5);
+  border-bottom:1px solid #1e293b;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  position:sticky;
+  top:0;
+  background:linear-gradient(180deg, rgba(15,23,42,0.95), rgba(15,23,42,0.75));
+  z-index:10;
+}
+header h1{font-size:var(--heading-size);margin:0;line-height:1.1}
+header .device{opacity:0.85;font-size:13px;margin-left:8px}
+header .right-controls{display:flex;align-items:center;gap:12px}
+
+/* logout button */
+.logout-btn{
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.06);
+  color:var(--muted);
+  padding:8px 12px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:13px;
+  transition:all 0.2s ease;
+}
+.logout-btn:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+  background:rgba(5,144,255,0.1);
+}
+
+/* =========================
+   Main container & cards
+   ========================= */
+main{
+  max-width:var(--container-max);
+  margin:24px auto;
+  padding:0 var(--gutter);
+  display:grid;
+  gap:16px;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:16px;
+  box-shadow:0 2px 6px rgba(2,6,23,0.3);
+}
+.card h2{margin:0 0 10px 0;font-size:16px}
+
+/* =========================
+   Loads (remote control)
+   ========================= */
+.loads{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.load{
+  background:var(--panel);
+  border:1px solid #1e293b;
+  border-radius:var(--radius-md);
+  padding:12px;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+}
+.icon{font-size:32px;display:block}
+.name{margin-top:6px;font-weight:600;font-size:13px}
+
+/* =========================
+   Toggle switch
+   ========================= */
+.switch{position:relative;display:inline-block;width:var(--switch-width);height:var(--switch-height)}
+.switch input{opacity:0;width:0;height:0;position:absolute;left:0;top:0}
+.slider{
+  position:absolute;
+  cursor:pointer;
+  top:0;left:0;right:0;bottom:0;
+  background:#334155;
+  transition:background .18s ease, box-shadow .18s ease;
+  border-radius:999px;
+}
+.slider:before{
+  position:absolute;
+  content:"";
+  height:var(--switch-thumb);
+  width:var(--switch-thumb);
+  left:4px;bottom:4px;
+  background:white;
+  transition:transform .18s ease;
+  border-radius:50%;
+  box-shadow:0 1px 2px rgba(2,6,23,0.25);
+}
+.switch input:checked + .slider{background:var(--accent-2)}
+.switch input:checked + .slider:before{transform:translateX(calc(var(--switch-width) - var(--switch-thumb) - 8px))}
+
+/* =========================
+   Timers & limits
+   ========================= */
+.timers,.limits{margin-top:12px}
+.preset-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.preset-row button{
+  background:#374151;
+  border:0;
+  color:var(--muted);
+  padding:8px 12px;
+  border-radius:10px;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+.preset-row button:hover{
+  background:#0a6bf3;
+  color:white;
+}
+
+.preset-row input,.limit-row input,select{
+  background:var(--panel);
+  border:1px solid #1e293b;
+  color:var(--muted);
+  padding:6px 8px;
+  border-radius:8px;
+  min-width:110px;
+}
+
+.limit-row{display:flex;gap:10px;align-items:center;margin-top:8px}
+#saveLimits{
+  margin-left:auto;
+  background:var(--accent);
+  color:white;
+  border:0;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+#saveLimits:hover{
+  background:#0074d9;
+  box-shadow:0 0 6px rgba(0,116,217,0.5);
+}
+
+/* =========================
+   Live monitoring
+   ========================= */
+.live-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.live-grid .tile{
+  background:var(--panel);
+  border:1px solid #1e293b;
+  border-radius:12px;
+  padding:10px;
+}
+.tile h4{margin:0 0 6px 0}
+.tile .kv{font-size:13px;opacity:0.95;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.tile.total{
+  grid-column:span 1;
+  background:linear-gradient(90deg, rgba(11,18,32,0.8), rgba(17,24,39,0.9));
+  border:1px solid rgba(37,99,235,0.12);
+}
+
+/* =========================
+   Charts & toolbar
+   ========================= */
+.chart-filters{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.chart-inputs{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.filter-input{display:block}
+.filter-input.hidden{display:none}
+
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.toolbar button,.toolbar select{
+  background:transparent;
+  color:var(--muted);
+  border:1px solid rgba(255,255,255,0.08);
+  padding:8px 10px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+.toolbar button:hover{
+  background:#1e293b;
+  border-color:var(--accent);
+  color:var(--accent);
+}
+#downloadPdf{
+  background:var(--accent);
+  color:#fff;
+  border:0;
+}
+#downloadPdf:hover{
+  background:#6e93b4;
+  box-shadow:0 0 6px rgba(3, 137, 254, 0.5);
+}
+
+#chart{width:100%;max-height:300px;display:block}
+#report{margin-top:8px;opacity:0.9}
+
+/* =========================
+   Notifications
+   ========================= */
+.notif-controls{display:flex;gap:8px;margin-bottom:8px}
+.notif-controls button{
+  background:#374151;
+  color:var(--muted);
+  border:0;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+.notif-controls button:hover{
+  background:#1861c6;
+  color:white;
+}
+#notifs{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+#notifs li{
+  background:var(--panel);
+  border:1px solid #1e293b;
+  border-radius:10px;
+  padding:8px;
+  font-size:13px;
+}
+
+/* =========================
+   Footer
+   ========================= */
+footer{padding:16px;text-align:center;color:var(--accent);}
+
+/* =========================
+   Responsive
+   ========================= */
+@media (max-width:1000px){
+  .loads,.live-grid{grid-template-columns:repeat(2,1fr)}
+  .live-grid .tile.total{grid-column:span 2}
+}
+@media (max-width:var(--bp-sm)){
+  header{padding:12px 10px;flex-direction:column;align-items:flex-start;gap:8px}
+  .loads,.live-grid{grid-template-columns:1fr}
+  .card{padding:12px}
+  header h1{font-size:18px}
+}
+
+/* =========================
+   Utility classes
+   ========================= */
+.hidden{display:none !important}
+.subtle{color:var(--muted-2);font-size:13px}
+.btn-small{padding:6px 8px;border-radius:8px;font-size:13px}
+
+
+/* Existing styles are already fine, just adding dropdown styles */
+
+/* Chart filter dropdown */
+.chart-filters select,
+#loadSelect,
+.toolbar select {
+  padding: 8px 12px;
+  border: 1px solid #f0f2f5;
+  border-radius: 6px;
+  background-color: #151a26;
+  color: #f9fafb;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.chart-filters select:focus,
+#loadSelect:focus,
+.toolbar select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 4px #3b82f6;
+}  

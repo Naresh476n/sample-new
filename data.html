@@ -1,0 +1,186 @@
+<!doctype html> 
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ESP32 Power Tracker (Local)</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+</head>
+<body>
+<header>
+  <h1>⚡ Daily Power Consumption Tracker With Notification Alerts</h1>
+  <div class="device">
+    Device: <span id="deviceId">esp32-local</span> · 
+    IP: <span id="ip">...</span>
+  </div>
+  <div class="right-controls">
+    <div style="color: rgb(52, 203, 32);" id="dateTime"></div>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</header>
+
+<main>
+  <!-- Remote Control -->
+  <section class="card">
+    <h2 style="color: rgb(220, 214, 223);">Remote Control</h2>
+    <div class="loads">
+      <div class="load"><span class="icon light">💡</span>
+        <label class="switch"><input type="checkbox" id="relay1"><span class="slider"></span></label>
+        <div class="name">Light 1</div>
+      </div>
+      <div class="load"><span class="icon light">💡</span>
+        <label class="switch"><input type="checkbox" id="relay2"><span class="slider"></span></label>
+        <div class="name">Light 2</div>
+      </div>
+      <div class="load"><span class="icon light">💡</span>
+        <label class="switch"><input type="checkbox" id="relay3"><span class="slider"></span></label>
+        <div class="name">Light 3</div>
+      </div>
+      <div class="load"><span class="icon fan">🌀</span>
+        <label class="switch"><input type="checkbox" id="relay4"><span class="slider"></span></label>
+        <div class="name">Fan</div>
+      </div>
+    </div> 
+    <br>
+
+
+    <!-- Timers -->
+    <div class="timers">
+      <h3 style="color: rgb(219, 222, 216);">Timer Auto-OFF</h3>
+      <div class="preset-row">
+        <button data-min="15" class="preset">15 min</button> 
+        <button data-min="30" class="preset">30 min</button>
+        <button data-min="60" class="preset">60 min</button>
+        <input type="number" id="customMin" placeholder="Custom (min)" min="1">
+        <select id="loadSelect">
+          <option value="1">Light 1</option>
+          <option value="2">Light 2</option>
+          <option value="3">Light 3</option>
+          <option value="4">Fan</option>
+        </select>
+        <button id="applyTimer">Apply</button>
+      </div>
+    </div>
+    
+
+    <!-- Limits -->
+    <div class="limits">
+      <h3 style="color: rgb(204, 211, 208);">Usage Limit (hours / day)</h3>
+      <div class="limit-row">
+        <label>Light 1 <input type="number" id="limit1" min="0.5" step="0.5" value="12"></label>
+        <label>Light 2 <input type="number" id="limit2" min="0.5" step="0.5" value="12"></label>
+        <label>Light 3 <input type="number" id="limit3" min="0.5" step="0.5" value="12"></label>
+        <label>FAN <input type="number" id="limit4" min="0.5" step="0.5" value="12"></label>
+        <button id="saveLimits">Save</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Monitoring -->
+  <section class="card">
+    <h2 style="color:rgb(192, 184, 197);">Live Monitoring</h2>
+    <div id="live" class="live-grid">
+      <div class="tile">
+        <h4>Light 1</h4>
+        <div class="kv"><span>Voltage:</span><span id="v1">0V</span></div>
+        <div class="kv"><span>Current:</span><span id="c1">0A</span></div>
+        <div class="kv"><span>Power:</span><span id="p1">0W</span></div>
+        <div class="kv"><span>Energy:</span><span id="e1">0Wh</span></div>
+        <div class="kv"><span>Status:</span><span id="s1">OFF</span></div>
+      </div>
+      <div class="tile">
+        <h4>Light 2</h4>
+        <div class="kv"><span>Voltage:</span><span id="v2">0V</span></div>
+        <div class="kv"><span>Current:</span><span id="c2">0A</span></div>
+        <div class="kv"><span>Power:</span><span id="p2">0W</span></div>
+        <div class="kv"><span>Energy:</span><span id="e2">0Wh</span></div>
+        <div class="kv"><span>Status:</span><span id="s2">OFF</span></div>
+      </div>
+      <div class="tile">
+        <h4>Light 3</h4>
+        <div class="kv"><span>Voltage:</span><span id="v3">0V</span></div>
+        <div class="kv"><span>Current:</span><span id="c3">0A</span></div>
+        <div class="kv"><span>Power:</span><span id="p3">0W</span></div>
+        <div class="kv"><span>Energy:</span><span id="e3">0Wh</span></div>
+        <div class="kv"><span>Status:</span><span id="s3">OFF</span></div>
+      </div>
+      <div class="tile">
+        <h4>Fan</h4>
+        <div class="kv"><span>Voltage:</span><span id="v4">0V</span></div>
+        <div class="kv"><span>Current:</span><span id="c4">0A</span></div>
+        <div class="kv"><span>Power:</span><span id="p4">0W</span></div>
+        <div class="kv"><span>Energy:</span><span id="e4">0Wh</span></div>
+        <div class="kv"><span>Status:</span><span id="s4">OFF</span></div>
+      </div>
+      <div class="tile total">
+        <h4>Total Usage</h4>
+        <div class="kv"><span>Total Voltage:</span><span id="tv">0V</span></div>
+        <div class="kv"><span>Total Current:</span><span id="tc">0A</span></div>
+        <div class="kv"><span>Total Power:</span><span id="tp">0W</span></div>
+        <div class="kv"><span>Total Energy:</span><span id="te">0Wh</span></div>
+      </div>
+    </div>
+  </section>
+
+ 
+  <!-- Charts -->
+  <section class="card">
+    <h2 style="color: rgb(245, 245, 245);">Charts & Reports</h2>
+    <div class="chart-filters">
+      <!-- Dropdown replacing radios -->
+      <select id="filterSelect">
+        <option value="day" selected>Single Day</option>
+        <option value="month">Single Month</option>
+        <option value="dayRange">Day → Day</option>
+        <option value="monthRange">Month → Month</option>
+      </select>
+    </div>
+
+    <div class="chart-inputs">
+      <input type="date" id="singleDay" class="filter-input">
+      <input type="month" id="singleMonth" class="filter-input hidden">
+      <div id="dayRangeInputs" class="filter-input hidden">
+        <label>From <input type="date" id="fromDay"></label>
+        <label>To <input type="date" id="toDay"></label>
+      </div>
+      <div id="monthRangeInputs" class="filter-input hidden">
+        <label>From <input type="month" id="fromMonth"></label>
+        <label>To <input type="month" id="toMonth"></label>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button id="loadCharts">Load</button>
+      <select id="chartType">
+        <option value="bar">Bar</option>
+        <option value="line">Line</option>
+      </select>
+      <button id="downloadPdf">Download PDF</button>
+    </div>
+
+    <canvas id="chart"></canvas>
+<div id="chartResults" style="margin-top: 15px; color: #e2e8f0; text-align: center;"></div>
+</div>
+  </section>
+
+
+  <!-- Notifications -->
+  <section class="card">
+    <h2 style="color: rgb(235, 231, 237);">Notifications</h2>
+    <div class="notif-controls">
+      <button id="refreshNotifs">Refresh</button>
+      <button id="clearNotifs">Clear</button>
+    </div>
+    <ul id="notifs">
+      <li>No notifications yet.</li>
+    </ul>
+  </section>
+</main>
+
+<footer><h1 style="color: rgb(0, 149, 255);">© Nareshkumar</h1></footer>
+
+<script src="app.js"></script>
+</body>
+</html>

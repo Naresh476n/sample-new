@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Login</title>
+    <link rel="stylesheet" href="login.css"/>
+  </head>
+  <body>
+    <div class="box">
+      <form id="loginForm" autocomplete="off">
+        <div class="title">
+          <h1>Login</h1>
+        </div>
+
+        <div class="input-box">
+          <label for="gmail" class="label-color">Gmail</label>
+          <input id="gmail" name="gmail" type="email" placeholder="Enter Gmail" required/>
+          <br/>
+
+          <label for="password" class="label-color">Password</label>
+          <div class="password-container">
+            <input id="password" name="password" type="password" placeholder="Enter Password" required/>
+            <button type="button" id="togglePassword" aria-label="Toggle password">👁</button>
+          </div>
+          <br/>
+
+          <input type="submit" class="Login" value="Login"/>
+          <p id="errorMsg" class="error-message"></p>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      // Password toggle
+      const togglePassword = document.getElementById("togglePassword");
+      const passwordField = document.getElementById("password");
+      togglePassword.addEventListener("click", () => {
+        const type = passwordField.getAttribute("type") === "password" ? "text" : "password";
+        passwordField.setAttribute("type", type);
+        togglePassword.textContent = type === "password" ? "👁" : "👁️‍🗨️";
+      });
+
+      // Demo users (front-end only; not secure for production)
+      const validUsers = [
+        { gmail: "naresh@gmail.com", password: "12345678" },
+        { gmail: "sanjai@gmail.com", password: "12345678" },
+        { gmail: "mouli@gmail.com", password: "12345678" },
+        { gmail: "nivas@gmail.com", password: "12345678" },
+        { gmail: "shathi@gmail.com", password: "12345678" },
+      ];
+
+      // Form submit
+      const loginForm = document.getElementById("loginForm");
+      const errorMsg = document.getElementById("errorMsg");
+
+      loginForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const email = document.getElementById("gmail").value.trim().toLowerCase();
+        const password = document.getElementById("password").value.trim();
+        const userFound = validUsers.find(u => u.gmail === email && u.password === password);
+
+        if (userFound) {
+          errorMsg.textContent = "";
+          sessionStorage.setItem("userEmail", email);
+          window.location.href = "data.html";
+        } else {
+          errorMsg.textContent = "❌ Invalid Gmail or Password";
+        }
+      });
+    </script>
+  </body>
+</html>
