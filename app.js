@@ -7,12 +7,12 @@ const ESP32_HOST = "http://esp32.local"; // or "http://192.168.1.123"
 const SUPABASE_URL =
   typeof process !== "undefined" && process.env?.NEXT_PUBLIC_SUPABASE_URL
     ? process.env.NEXT_PUBLIC_SUPABASE_URL
-    : "https://fpyjhxsmleuztoxxnxec.supabase.co";
+    : "https://dqilouqjgxfzsuirvras.supabase.co";
 
 const SUPABASE_ANON_KEY =
   typeof process !== "undefined" && process.env?.NEXT_PUBLIC_SUPABASE_ANON_KEY
     ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-    : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZweWpoeHNtbGV1enRveHhueGVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc2MTc4NjksImV4cCI6MjA4MzE5Mzg2OX0.8TwwLVl50OObXNgbpf5BPCU8LNFNU8VhS3DK3t180mI";
+    : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRxaWxvdXFqZ3hmenN1aXJ2cmFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg5NjEzNjgsImV4cCI6MjA4NDUzNzM2OH0.5PaUXrpBigG5R5pN4xSgs8oOEVM21XNvNfGQJWY8th4";
 
 // Relay pin mapping (id → GPIO pin)
 const relayPins = { 1: 16, 2: 17, 3: 18, 4: 19 };
